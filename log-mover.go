@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/agrison/go-commons-lang/stringUtils"
 	"os"
 	"path/filepath"
 	"strings"
@@ -16,35 +17,19 @@ func main() {
 
 	flag.Parse()
 
-	if !isFlagPassed([]string{"srcDir", "destDir", "appName"}) {
+	if stringUtils.IsAnyBlank(*srcDir, *destDir, *appName, *suffix) {
 		fmt.Println("must pass srcDir, destDir and appName flag")
 		return
 	}
 
-	if !strings.HasSuffix(*srcDir, "/") {
-		*srcDir = *srcDir + "/"
-	}
-
-	if !strings.HasSuffix(*destDir, "/") {
-		*destDir = *destDir + "/"
-	}
+	stringUtils.AppendIfMissing(*srcDir, "/", "/")
+	stringUtils.AppendIfMissing(*destDir, "/", "/")
 
 	filepath.Walk(*srcDir, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, *suffix) && strings.Contains(path, *appName) {
 			os.Rename(path, *destDir+filepath.Base(path))
 		}
+		fmt.Println("move log complete")
 		return nil
 	})
-}
-
-func isFlagPassed(names []string) bool {
-	flagLen, count := len(names), 0
-	for _, name := range names {
-		flag.Visit(func(f *flag.Flag) {
-			if f.Name == name {
-				count++
-			}
-		})
-	}
-	return flagLen == count
 }
