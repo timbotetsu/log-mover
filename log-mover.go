@@ -10,9 +10,9 @@ import (
 
 func main() {
 	srcDir := flag.String("srcDir", "", "source directory contains logs")
-	destDir := flag.String("destDir", "", "target directory for move logs")
+	destDir := flag.String("destDir", "", "destination directory for storing logs")
 	appName := flag.String("appName", "", "application name")
-	suffix := flag.String("suffix", ".log.gz", "file extension")
+	suffix := flag.String("suffix", ".log.gz", "log file extension")
 
 	flag.Parse()
 
