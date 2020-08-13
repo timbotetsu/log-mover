@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,10 +16,17 @@ func main() {
 
 	flag.Parse()
 
-	flagsExist := isFlagPassed([]string{"srcDir", "destDir", "appName"})
-
-	if !flagsExist {
+	if !isFlagPassed([]string{"srcDir", "destDir", "appName"}) {
+		fmt.Println("must pass srcDir, destDir and appName flag")
 		return
+	}
+
+	if !strings.HasSuffix(*srcDir, "/") {
+		*srcDir = *srcDir + "/"
+	}
+
+	if !strings.HasSuffix(*destDir, "/") {
+		*destDir = *destDir + "/"
 	}
 
 	filepath.Walk(*srcDir, func(path string, info os.FileInfo, err error) error {
@@ -30,8 +38,7 @@ func main() {
 }
 
 func isFlagPassed(names []string) bool {
-	flagLen := len(names)
-	count := 0
+	flagLen, count := len(names), 0
 	for _, name := range names {
 		flag.Visit(func(f *flag.Flag) {
 			if f.Name == name {
