@@ -1,6 +1,9 @@
 # Jetbrains IDE
 .idea/
 
+# go sum
+go.sum
+
 # Binaries for programs and plugins
 *.exe
 *.exe~

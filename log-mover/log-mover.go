@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"github.com/agrison/go-commons-lang/stringUtils"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,7 +18,7 @@ func main() {
 	flag.Parse()
 
 	if stringUtils.IsAnyBlank(*srcDir, *destDir, *appName, *suffix) {
-		fmt.Println("must pass srcDir, destDir and appName flag")
+		log.Println("must pass srcDir, destDir and appName flag")
 		return
 	}
 
@@ -29,7 +29,7 @@ func main() {
 		if strings.HasSuffix(path, *suffix) && strings.Contains(path, *appName) {
 			os.Rename(path, *destDir+filepath.Base(path))
 		}
-		fmt.Println("move log complete")
+		log.Println("move log complete")
 		return nil
 	})
 }
